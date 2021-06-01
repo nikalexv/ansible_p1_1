@@ -22,7 +22,7 @@
           src: index.nginx-debian.html
           dest: /var/www/html/index.nginx-debian.html
           mode: 0644
-      #notify: restart nginx
+      notify: restart nginx
     - name: Check NGINX configs
       shell: "/usr/sbin/nginx -t"
       register: nginx_config_status
@@ -42,5 +42,4 @@
       register: restart_nginx_result
       ignore_errors: true
       when: nginx_config_status == 0
-#/var/www/html/index.nginx-debian.html
 
