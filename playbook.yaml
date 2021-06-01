@@ -21,16 +21,7 @@
           src: index.nginx-debian.html
           dest: /var/www/html/index.nginx-debian.html
           mode: 0644
-    - name: Check NGINX configs
-      shell: "/usr/sbin/nginx -t"
-      register: nginx_config_status
       notify: restart nginx
-    - name: NGINX test status
-      debug:
-        msg: "{{ nginx_config_status }}"
-    - name: NGINX test status
-      debug:
-        msg: "{{ nginx_config_status.rc }}"
   handlers:
     - name: restart nginx
       systemd:
@@ -39,5 +30,3 @@
         state: restarted
       register: restart_nginx_result
       ignore_errors: true
-      when: nginx_config_status == 0
-
