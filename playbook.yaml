@@ -21,7 +21,6 @@
           src: index.nginx-debian.html
           dest: /var/www/html/index.nginx-debian.html
           mode: 0644
-      notify: restart nginx
     - name: Check NGINX configs
       shell: "/usr/sbin/nginx -t"
       register: nginx_config_status
