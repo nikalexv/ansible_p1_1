@@ -1,0 +1,46 @@
+---
+- name: Enable nginx service
+  hosts: 127.0.0.1
+  remote_user: root
+  tasks:
+    - name: Install nginx
+      apt:
+        name: nginx-extras
+        update_cache: yes
+    - name: Start nginx srvice
+      systemd:
+        name: nginx
+        state: started
+    - name: Update nginx config
+      copy:
+        src: nginx.conf
+        dest: /etc/nginx/sites-enabled/default
+        mode: 0644
+      notify: restart nginx
+    - name: Update main page
+      copy:
+          src: index.nginx-debian.html
+          dest: /var/www/html/index.nginx-debian.html
+          mode: 0644
+      #notify: restart nginx
+    - name: Check NGINX configs
+      shell: "/usr/sbin/nginx -t"
+      register: nginx_config_status
+      notify: restart nginx
+    - name: NGINX test status
+      debug:
+        msg: "{{ nginx_config_status }}"
+    - name: NGINX test status
+      debug:
+        msg: "{{ nginx_config_status.rc }}"
+  handlers:
+    - name: restart nginx
+      systemd:
+        deamon_reload: true
+        name: nginx
+        state: restarted
+      register: restart_nginx_result
+      ignore_errors: true
+      when: nginx_config_status == 0
+#/var/www/html/index.nginx-debian.html
+
