@@ -1,1 +1,2 @@
-# ansible_p1
+# run playbook
+sudo ansible-playbook playbook.yaml --connection=local
