@@ -16,7 +16,6 @@
         src: nginx.conf
         dest: /etc/nginx/sites-enabled/default
         mode: 0644
-      notify: restart nginx
     - name: Update main page
       copy:
           src: index.nginx-debian.html
